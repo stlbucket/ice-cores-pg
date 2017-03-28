@@ -4,21 +4,14 @@ const copyFrom = require('pg-copy-streams').from;
 const client = require('../../../db/pgClient');
 
 const validateHeaderRow = require('./validateHeaderRow');
-const createTargetTable = require('./createTargetTable');
 const streamDataToTable = require('./streamDataToTable');
 
-function streamToDb(iceCoreInfo, readStream){
-  const stagingTable = `ice_cores_staging.ice_core_${iceCoreInfo.uploadId.split('-').join('_')}`;
-  const fields = iceCoreInfo.fields;
-
+function streamToDb(stagingTable, readStream){
   const d = Promise.defer();
 
   client()
     .then(client => {
-      return createTargetTable(stagingTable, fields)
-        .then(createTargetTableResult => {
-          return client.query(copyFrom(`COPY ${stagingTable} FROM STDIN CSV DELIMITER E',' HEADER`));
-        })
+      return client.query(copyFrom(`COPY ${stagingTable} FROM STDIN CSV DELIMITER E',' HEADER`));
     })
     .then(copyFromStream => {
 

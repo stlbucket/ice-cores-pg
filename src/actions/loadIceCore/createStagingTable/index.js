@@ -1,9 +1,9 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const clog = require('fbkt-clog');
-const sequelize = require('../../../../db/client');
+const sequelize = require('../../../db/client');
 
-function createTargetTable(tableName, fields){
+function createStagingTable(tableName, fields){
   return Promise.resolve(buildScript(tableName, fields))
     .then(script => {
       return executeScript(script);
@@ -33,4 +33,4 @@ CREATE TABLE ${tableName} (${
   `;
 }
 
-module.exports = createTargetTable;
+module.exports = createStagingTable;

@@ -10,8 +10,10 @@ function processData(iceCoreInfo, stagingTable){
       return executeSql(importSql);
     })
     .then(importResult => {
-      clog('IMPORT RESULT', importResult);
-      return importResult;
+      return { iceCoreProcessingResult: `ICE CORE: ${iceCoreInfo.name}:   imported ${importResult.rowCount} data points` };
+    })
+    .catch(error => {
+      clog.error('ERROR PROCESSING ICE CORE IMPORT DATA', error);
     });
 }
 

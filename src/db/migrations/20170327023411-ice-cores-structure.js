@@ -24,7 +24,10 @@ module.exports = {
   }
 };
 
-const down_script = `drop schema if exists ice_cores cascade;`;
+const down_script = `
+drop schema if exists ice_cores_staging cascade;
+drop schema if exists ice_cores cascade;
+`;
 
 const up_script = `
 --||--
