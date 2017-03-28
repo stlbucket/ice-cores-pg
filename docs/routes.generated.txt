@@ -15,7 +15,7 @@ router
  │        router                                                                                               
  │         └── router                              /^\/v1\/?(?=\/|$)/                                          
  │             router                                                                                          
- │              └── router                         /^\/iceCores\/?(?=\/|$)/                                    
+ │              └── router                         /^\/iceCoreSummary\/?(?=\/|$)/                              
  │                  router                                                                                     
  │                   └── bound dispatch            /                                                           GET
  │                        └── <anonymous>          /                                                           GET

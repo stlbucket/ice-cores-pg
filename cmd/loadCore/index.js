@@ -5,9 +5,7 @@ const importDataSet = require('../../src/actions/importDataSet');
 const pgClient = require('../../src/db/pgClient');
 const getReadStream = require('./getReadStream');
 
-// const filename = './testCores/GreenlandIceCoreData_490.csv';
 const filename = './testCores/GreenlandIceCoreData.csv';
-// const filename = './testCores/GISP2.csv';
 const importInfo = {
   // name: 'GISP2',
   name: uuid.v4(),

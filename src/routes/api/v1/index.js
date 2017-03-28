@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const iceCores = require('./ice-cores');
+const iceCoreSummary = require('./ice-core-summary');
 
-router.use('/iceCores', iceCores);
+router.use('/iceCoreSummary', iceCoreSummary);
 
 module.exports = router;
