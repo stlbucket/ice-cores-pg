@@ -1,12 +1,9 @@
 const Promise = require('bluebird');
-const clog = require('fbkt-clog');
 const _ = require('lodash');
 
-function buildSql(iceCoreInfo, stagingTable){
-  // clog('PROCESS IT', {
-  //   iceCoreInfo: iceCoreInfo,
-  //   stagingTable: stagingTable
-  // });
+function buildImportSql(workspace){
+  const iceCoreInfo = workspace.importInfo;
+  const stagingTable = workspace.stagingTable;
 
   const sql = `
 set search_path to ice_cores_staging, ice_cores, public;
@@ -149,4 +146,4 @@ where dpt.name = '${dataPointType}';
   return Promise.resolve(sql);
 }
 
-module.exports = buildSql;
+module.exports = buildImportSql;

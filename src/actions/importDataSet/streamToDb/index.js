@@ -1,27 +1,24 @@
 const Promise = require('bluebird');
 const clog    = require('fbkt-clog');
 const copyFrom = require('pg-copy-streams').from;
-const client = require('../../../db/pgClient');
 
 const validateHeaderRow = require('./validateHeaderRow');
-const streamDataToTable = require('./streamDataToTable');
 
-function streamToDb(stagingTable, readStream){
+function streamToDb(workspace){
   const d = Promise.defer();
 
-  client()
+  workspace.importInfo.pgClient()
     .then(client => {
-      return client.query(copyFrom(`COPY ${stagingTable} FROM STDIN CSV DELIMITER E',' HEADER`));
+      return client.query(copyFrom(`COPY ${workspace.stagingTable} FROM STDIN CSV DELIMITER E',' HEADER`));
     })
     .then(copyFromStream => {
 
       copyFromStream.on('end', function () {
         d.resolve({
-          stagingTable:  stagingTable
+          stagingTable: workspace.stagingTable
         });
       });
-
-      readStream
+      workspace.readStream
         .pipe(copyFromStream);
     });
 

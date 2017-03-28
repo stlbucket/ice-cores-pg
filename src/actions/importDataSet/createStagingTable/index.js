@@ -1,12 +1,11 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const clog = require('fbkt-clog');
-const client = require('../../../db/pgClient');
 
-function createStagingTable(tableName, fields){
-  return Promise.resolve(buildScript(tableName, fields))
+function createStagingTable(workspace){
+  return Promise.resolve(buildScript(workspace))
     .then(script => {
-      return executeScript(script);
+      return executeScript(workspace, script);
     })
     .catch(error => {
       clog('ERROR CREATING IMPORT TABLE', error);
@@ -14,18 +13,18 @@ function createStagingTable(tableName, fields){
     })
 }
 
-function executeScript(script){
-  return client()
+function executeScript(workspace, script){
+  return workspace.importInfo.pgClient()
     .then(client => {
       return client.query(script);
     })
 }
 
-function buildScript(tableName, fields){
+function buildScript(workspace){
 
   return `
-CREATE TABLE ${tableName} (${
-  fields.map(
+CREATE TABLE ${workspace.stagingTable} (${
+  workspace.importInfo.fields.map(
     field => {
       return `\n  ${_.snakeCase(field)} text NULL`
       // return `\n  "${field}" text NULL`
