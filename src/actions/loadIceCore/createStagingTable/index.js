@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const clog = require('fbkt-clog');
-const sequelize = require('../../../db/client');
+const client = require('../../../db/pgClient');
 
 function createStagingTable(tableName, fields){
   return Promise.resolve(buildScript(tableName, fields))
@@ -15,7 +15,10 @@ function createStagingTable(tableName, fields){
 }
 
 function executeScript(script){
-  return sequelize().query(script)
+  return client()
+    .then(client => {
+      return client.query(script);
+    })
 }
 
 function buildScript(tableName, fields){
