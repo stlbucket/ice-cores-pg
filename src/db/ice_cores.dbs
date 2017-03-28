@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="soro" id="Project_18915e54" template="Default" database="PostgreSQL" >
+	<schema name="ice_cores" catalogname="ice_cores" schemaname="ice_cores" >
+		<table name="data_point" >
+			<column name="id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="value" type="float8" length="17" decimal="17" jt="6" mandatory="y" />
+			<column name="sample_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="data_point_type_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="series_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<index name="pk_data_point" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_data_point_data_point_type" to_schema="ice_cores" to_table="data_point_type" >
+				<fk_column name="data_point_type_id" pk="id" />
+			</fk>
+			<fk name="fk_data_point_sample" to_schema="ice_cores" to_table="sample" >
+				<fk_column name="sample_id" pk="id" />
+			</fk>
+			<fk name="fk_data_point_series" to_schema="ice_cores" to_table="series" >
+				<fk_column name="series_id" pk="id" />
+			</fk>
+		</table>
+		<table name="data_point_type" >
+			<column name="id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="name" type="text" decimal="0" jt="12" mandatory="y" />
+			<index name="pk_data_point_type" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="ice_core" >
+			<column name="id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="name" type="text" decimal="0" jt="12" mandatory="y" />
+			<index name="pk_ice_core" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="sample" >
+			<column name="id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="ice_core_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="top_depth" type="float8" length="17" decimal="17" jt="6" />
+			<column name="top_age" type="float8" length="17" decimal="17" jt="6" />
+			<column name="bottom_depth" type="float8" length="17" decimal="17" jt="6" />
+			<column name="bottom_age" type="float8" length="17" decimal="17" jt="6" />
+			<index name="pk_sample" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_sample_ice_core" to_schema="ice_cores" to_table="ice_core" >
+				<fk_column name="ice_core_id" pk="id" />
+			</fk>
+		</table>
+		<table name="series" >
+			<column name="id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="name" type="text" decimal="0" jt="12" mandatory="y" />
+			<column name="ice_core_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="data_point_type_id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<index name="pk_series" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_series_data_point_type" to_schema="ice_cores" to_table="data_point_type" >
+				<fk_column name="data_point_type_id" pk="id" />
+			</fk>
+			<fk name="fk_series_ice_core" to_schema="ice_cores" to_table="ice_core" >
+				<fk_column name="ice_core_id" pk="id" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="ice_cores" database="PostgreSQL" driver_class="org.postgresql.Driver" driver_jar="postgresql-42.0.0.jre6.jar" driver_desc="Standard" host="localhost" port="5432" instance="ice_cores" user="postgres" passwd="ZmJrdHBAJHN3b3Jk" />
+	<layout name="ice_cores" id="Layout_2e07bbfd" show_relation="columns" >
+		<entity schema="ice_cores" name="data_point_type" color="bfd4f5" x="64" y="80" />
+		<entity schema="ice_cores" name="sample" color="bfd4f5" x="320" y="416" />
+		<entity schema="ice_cores" name="ice_core" color="bfd4f5" x="64" y="480" />
+		<entity schema="ice_cores" name="data_point" color="bfd4f5" x="320" y="144" />
+		<entity schema="ice_cores" name="series" color="bfd4f5" x="48" y="256" />
+		<group name="ice_cores" color="ecf0f7" >
+			<entity schema="ice_cores" name="series" />
+			<entity schema="ice_cores" name="data_point" />
+			<entity schema="ice_cores" name="ice_core" />
+			<entity schema="ice_cores" name="sample" />
+			<entity schema="ice_cores" name="data_point_type" />
+		</group>
+	</layout>
+</project>

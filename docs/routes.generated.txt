@@ -1,0 +1,28 @@
+router                                                                                                         
+ ├── query                                         *                                                           
+ ├── expressInit                                   *                                                           
+ ├── logger                                        *                                                           
+ ├── jsonParser                                    *                                                           
+ ├── urlencodedParser                              *                                                           
+ ├── cookieParser                                  *                                                           
+ ├── serveStatic                                   *                                                           
+ ├── router                                        *                                                           
+ │   router                                                                                                    
+ │    ├── bound dispatch                           /                                                           GET
+ │    │    └── <anonymous>                         /                                                           GET
+ │    │   
+ │    └── router                                   /^\/api\/?(?=\/|$)/                                         
+ │        router                                                                                               
+ │         └── router                              /^\/v1\/?(?=\/|$)/                                          
+ │             router                                                                                          
+ │              └── router                         /^\/iceCores\/?(?=\/|$)/                                    
+ │                  router                                                                                     
+ │                   └── bound dispatch            /                                                           GET
+ │                        └── <anonymous>          /                                                           GET
+ │                       
+ │                  
+ │             
+ │        
+ │   
+ ├── <anonymous>                                   *                                                           
+ └── <anonymous>                                   *                                                           
