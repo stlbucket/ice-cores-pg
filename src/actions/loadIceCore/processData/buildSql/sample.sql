@@ -64,7 +64,7 @@ where not exists (
   where name = 'NO3_uM'
 );
 
--- series
+-- series -----------------------------------------------------------------------------------------
 insert into series (
   ice_core_id,
   data_point_type_id,
@@ -113,6 +113,7 @@ select
   bottom_age :: float
 from ice_cores_staging.ice_core_35d0b64b_879b_4540_a037_876eb7a74af9;
 
+-- data point
 insert into data_point (
   sample_id,
   series_id,

@@ -9,7 +9,6 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    console.log(up_script);
     queryInterface.sequelize.query(up_script);
   },
 

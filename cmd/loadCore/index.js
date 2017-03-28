@@ -10,7 +10,8 @@ const iceCoreInfo = {
   name: uuid.v4(),
   uploadId: uuid.v4(),
   filename: filename,
-  fields: [ "TopDepth", "BottomDepth", "NO3_ppb", "NO3_uM", "TopAge"," BottomAge" ]
+  fields: [ "TopDepth", "BottomDepth", "NO3_ppb", "NO3_uM", "TopAge"," BottomAge" ],
+  dataPointTypes: ["NO3_ppb", "NO3_uM" ]
 };
 
 loadIceCore(iceCoreInfo)

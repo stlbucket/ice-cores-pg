@@ -1,6 +1,5 @@
 const Promise = require('bluebird');
 const clog    = require('fbkt-clog');
-const Transform = require('stream').Transform;
 const copyFrom = require('pg-copy-streams').from;
 const client = require('../../../db/pgClient');
 
@@ -8,36 +7,28 @@ const validateHeaderRow = require('./validateHeaderRow');
 const createTargetTable = require('./createTargetTable');
 const streamDataToTable = require('./streamDataToTable');
 
-function streamToDb(workspace){
-  const tableName = `ice_cores_staging.ice_core_${workspace.iceCoreInfo.uploadId.split('-').join('_')}`;
-  const fields = workspace.iceCoreInfo.fields;
+function streamToDb(iceCoreInfo, readStream){
+  const stagingTable = `ice_cores_staging.ice_core_${iceCoreInfo.uploadId.split('-').join('_')}`;
+  const fields = iceCoreInfo.fields;
 
   const d = Promise.defer();
 
-
-  // workspace.readStream.on('end', function(){
-  //   d.resolve();
-  // });
-
   client()
     .then(client => {
-      return createTargetTable(tableName, fields)
+      return createTargetTable(stagingTable, fields)
         .then(createTargetTableResult => {
-           clog('TARGET TABLE', createTargetTableResult);
-          return client;
-        });
-    })
-    .then(client => {
-      return client.query(copyFrom(`COPY ${tableName} FROM STDIN CSV DELIMITER E',' HEADER`));
+          return client.query(copyFrom(`COPY ${stagingTable} FROM STDIN CSV DELIMITER E',' HEADER`));
+        })
     })
     .then(copyFromStream => {
-      clog('heyo', copyFromStream);
 
       copyFromStream.on('end', function () {
-        d.resolve();
+        d.resolve({
+          stagingTable:  stagingTable
+        });
       });
 
-      workspace.readStream
+      readStream
         .pipe(copyFromStream);
     });
 
